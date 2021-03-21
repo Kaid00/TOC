@@ -29,6 +29,7 @@ function headerSlug(headerText) {
  * @param {string} noteBody From the selected note
  */
 
+/////////////
 function getNoteheaders(noteBody: string) {
   const headers = [];
   const lines = noteBody.split('\n');
@@ -56,22 +57,56 @@ function getNoteheaders(noteBody: string) {
 joplin.plugins.register({
   // onStart function runs the initialisation code
   onStart: async function () {
-    console.info('Toc plugin');
+    // Panel Object
+    const panels = await joplin.views.panels.create('1');
+    // const view = await (panels as any).create();
+
+    // Sets initial content while the TOC is being created
+    await joplin.views.panels.setHtml(panels, 'Loading......');
+    await joplin.views.panels.addScript(panels, './webview.css');
+    await joplin.views.panels.addScript(panels, './webview.js');
 
     // Updating TOC view
     async function updateTocView() {
       // getting current note
       const note = await joplin.workspace.selectedNote();
+      slugs = {};
 
       // if no note  is currently selected
       if (!note) {
-        console.log('No note is selected');
+        await joplin.views.panels.setHtml(
+          panels,
+          'Please select a note to view the table of content'
+        );
       }
 
       // when a note is selected
       else {
         const headers = getNoteheaders(note.body);
-        console.log('Note content has changed! New note headers are', headers);
+
+        // creating the html for each Header
+        const headerHtml = [];
+        for (const header of headers) {
+          const slug = headerSlug(header.text);
+
+          headerHtml.push(`
+				<p class = "toc-item" style = "padding-left:${(header.level - 1) * 15}px">
+					<a class = "toc-item-link" href = "#" data-slug = "${escapeHtml(slug)}">
+						${escapeHtml(header.text)}
+					</a>
+				</p>
+			`);
+        }
+
+        // Insert all the headers in a div container and set the WebView HTML
+        await joplin.views.panels.setHtml(
+          panels,
+          `
+			<div class = "container>
+				${headerHtml.join('\n')}
+			</div>
+		`
+        );
       }
     }
 
