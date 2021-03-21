@@ -6,6 +6,6 @@
 }
 
 .toc-item-link {
-  color: rebeccapurple;
+  color: var(--joplin-color);
   text-decoration: none;
 }

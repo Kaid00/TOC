@@ -57,14 +57,14 @@ function getNoteheaders(noteBody: string) {
 joplin.plugins.register({
   // onStart function runs the initialisation code
   onStart: async function () {
-    // Panel Object
+    // view panel Object
     const panels = await joplin.views.panels.create('1');
     // const view = await (panels as any).create();
 
     // Sets initial content while the TOC is being created
     await joplin.views.panels.setHtml(panels, 'Loading......');
-    await joplin.views.panels.addScript(panels, '/src/webview.css');
-    await joplin.views.panels.addScript(panels, '/src/webview.js');
+    await joplin.views.panels.addScript(panels, './webview.css');
+    await joplin.views.panels.addScript(panels, './webview.js');
 
     // Updating TOC view
     async function updateTocView() {
@@ -91,7 +91,9 @@ joplin.plugins.register({
 
           headerHtml.push(`
 				<p class = "toc-item" style = "padding-left:${(header.level - 1) * 15}px">
-					<a class = "toc-item-link" href = "#" data-slug = "${escapeHtml(slug)}">
+					<a id = "toc-item-linked" class = "toc-item-link" href = "#" data-slug = "${escapeHtml(
+            slug
+          )}">
 						${escapeHtml(header.text)}
 					</a>
 				</p>
