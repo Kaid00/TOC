@@ -63,8 +63,8 @@ joplin.plugins.register({
 
     // Sets initial content while the TOC is being created
     await joplin.views.panels.setHtml(panels, 'Loading......');
-    await joplin.views.panels.addScript(panels, './webview.css');
-    await joplin.views.panels.addScript(panels, './webview.js');
+    await joplin.views.panels.addScript(panels, '/src/webview.css');
+    await joplin.views.panels.addScript(panels, '/src/webview.js');
 
     // Updating TOC view
     async function updateTocView() {
