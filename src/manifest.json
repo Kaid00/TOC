@@ -1,0 +1,12 @@
+{
+	"manifest_version": 1,
+	"id": "com.example.toc-00",
+	"app_min_version": "1.7",
+	"version": "1.0.0",
+	"name": "TOC",
+	"description": "Table of content plugin",
+	"author": "Kaidoo",
+	"homepage_url": "https://github.com/Kaid00/TOC.git",
+	"repository_url": "https://github.com/Kaid00/TOC.git",
+	"keywords": []
+}
