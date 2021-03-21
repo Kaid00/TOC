@@ -1,7 +1,30 @@
 import joplin from 'api';
+const uslug = require('uslug');
+
+// Escaping HTML
+function escapeHtml(unsafe: string) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Adding slugs to the header
+let slugs = {};
+function headerSlug(headerText) {
+  const s = uslug(headerText);
+  let num = slugs[s] ? slugs[s] : 1;
+  const output = [s];
+  if (num > 1) {
+    output.push(num);
+  }
+  slugs[s] = num + 1;
+  return output.join('-');
+}
 
 // Getting all Headers within the note
-
 /***
  * @param {string} noteBody From the selected note
  */
@@ -48,7 +71,7 @@ joplin.plugins.register({
       // when a note is selected
       else {
         const headers = getNoteheaders(note.body);
-        console.log('Note content has changed! New note is', headers);
+        console.log('Note content has changed! New note headers are', headers);
       }
     }
 
